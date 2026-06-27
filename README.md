@@ -40,17 +40,21 @@ How to Run the Experiments
 
 1. STOP-AND-WAIT RUNS:
    Open Terminal 1 (Receiver):
+
    $ python3 -m stop_and_wait.receiver_stopwait
    
    Open Terminal 2 (Sender):
-   $ python3 -m stop_and_wait.sender_stopwait tests/test_10k.txt
 
-2. GO-BACK-N RUNS:
+    $ python3 -m stop_and_wait.sender_stopwait tests/test_10k.txt
+
+3. GO-BACK-N RUNS:
    Open Terminal 1 (Receiver):
+
    $ python3 -m go_back_n.receiver_gbn
    
    Open Terminal 2 (Sender):
-   $ python3 -m go_back_n.sender_gbn
+
+    $ python3 -m go_back_n.sender_gbn
 
 Configuring Packet Loss
 
