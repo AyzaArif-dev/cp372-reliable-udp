@@ -6,6 +6,8 @@ unreliable UDP sockets in Python.
 
 Project Structure
 
+## Project Structure
+
 ```text
 cp372-reliable-udp/
 ├── go_back_n/
@@ -31,8 +33,7 @@ cp372-reliable-udp/
 ├── LICENSE
 ├── README.md
 ├── received.txt
-└── Testing            
-
+└── Testing         
 
 How to Run the Experiments
 
