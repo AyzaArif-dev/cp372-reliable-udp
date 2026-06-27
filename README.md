@@ -34,6 +34,7 @@ cp372-reliable-udp/
 ├── README.md
 ├── received.txt
 └── Testing         
+```
 
 How to Run the Experiments
 
@@ -59,9 +60,8 @@ modify the global variable:
 LOSS_RATE = 0.3  # Represents a 30% simulated loss threshold
 
 Known Bugs & Limitation
-------------------------
 - The automated benchmarking script for Go-Back-N contains a logging metric error 
   that records 0 retransmissions to the final summary data arrays despite 
   timeouts triggering correctly during manual execution loops.
-  - GBN evaluations utilize simulated generated string message payloads in memory 
+- GBN evaluations utilize simulated generated string message payloads in memory 
   rather than conducting direct binary system disk writes.
