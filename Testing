@@ -1,0 +1,81 @@
+Go-Back-N Testing
+
+Test 1 – GBN Data Transfer (0% Loss)
+
+Command
+
+python3 -m go_back_n receiver 5001 5000 4
+python3 -m go_back_n sender 5000 5001 4
+send hello
+
+Expected
+
+All packets received successfully.
+No retransmissions.
+
+Actual
+
+Packets 0–4 acknowledged successfully.
+Transfer completed.
+
+Status
+
+PASS
+
+Test 2 – GBN Packet Loss (10%)
+
+Command
+
+python3 -m go_back_n receiver 5001 5000 4 --p 0.1
+
+Expected
+
+Some packets dropped.
+Sender retransmits missing packets.
+Transfer completes successfully.
+
+Actual
+
+Packet timeouts occurred.
+Missing packets retransmitted.
+Transfer completed successfully.
+
+Status
+
+PASS
+
+Test 3 – GBN Packet Loss (20%)
+
+Expected:
+
+More retransmissions than 10%.
+Transfer still successful.
+
+Actual:
+
+Packet2 timeout
+Packet3 timeout
+Packet4 timeout
+ACKs received after retransmission.
+
+Status:
+
+PASS
+
+Test 4 – GBN Packet Loss (30%)
+
+Expected:
+
+Frequent retransmissions.
+Transfer still completes correctly.
+
+Actual:
+
+Several packets retransmitted.
+Receiver acknowledged all packets.
+
+Status:
+
+PASS
+
+
