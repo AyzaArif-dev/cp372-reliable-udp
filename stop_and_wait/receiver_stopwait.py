@@ -5,7 +5,7 @@ from shared.packet import make_packet, parse_packet
 HOST = "0.0.0.0"
 PORT = 5000
 
-LOSS_RATE = 0.0  # change for testing later
+LOSS_RATE = 0.2  # change for testing later
 
 
 def should_drop():
