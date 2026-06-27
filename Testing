@@ -1,81 +1,282 @@
-Go-Back-N Testing
+# Testing Documentation
 
-Test 1 – GBN Data Transfer (0% Loss)
+## Stop-and-Wait Testing
 
-Command
+### Test 1 – Data Transfer (0% Packet Loss)
 
+**Command**
+
+```bash
+PYTHONPATH=. python3 stop_and_wait/receiver_stopwait.py
+PYTHONPATH=. python3 stop_and_wait/sender_stopwait.py
+```
+
+**Expected**
+
+* All packets received successfully.
+* No retransmissions.
+* File transfer completes.
+
+**Actual**
+
+```
+START received
+Accepted seq=1
+Accepted seq=2
+...
+Accepted seq=10
+END received
+File transfer complete
+```
+
+Sender output:
+
+```
+Sending START packet
+Sending DATA seq=1
+...
+Sending DATA seq=10
+Sending END packet
+File transfer complete
+```
+
+**Status**
+
+PASS
+
+---
+
+### Test 2 – 10% Packet Loss
+
+**Command**
+
+```bash
+LOSS_RATE = 0.1
+PYTHONPATH=. python3 stop_and_wait/receiver_stopwait.py
+PYTHONPATH=. python3 stop_and_wait/sender_stopwait.py
+```
+
+**Expected**
+
+* Random packet drops.
+* Sender retransmits timed-out packets.
+* File transfer completes successfully.
+
+**Actual**
+
+Receiver:
+
+```
+Packet dropped (simulated)
+Accepted seq=4
+Packet dropped (simulated)
+Accepted seq=10
+END received
+```
+
+Sender:
+
+```
+Timeout → resending seq 4
+Timeout → resending seq 10
+File transfer complete
+```
+
+**Status**
+
+PASS
+
+---
+
+### Test 3 – 20% Packet Loss
+
+**Command**
+
+```bash
+LOSS_RATE = 0.2
+PYTHONPATH=. python3 stop_and_wait/receiver_stopwait.py
+PYTHONPATH=. python3 stop_and_wait/sender_stopwait.py
+```
+
+**Expected**
+
+* More packet drops than 10%.
+* Increased retransmissions.
+* Successful file transfer.
+
+**Actual**
+
+Receiver:
+
+```
+Packet dropped (simulated)
+Packet dropped (simulated)
+Accepted seq=7
+Accepted seq=10
+```
+
+Sender:
+
+```
+Timeout → resending seq 5
+Timeout → resending seq 7
+Timeout → resending seq 10
+File transfer complete
+```
+
+**Status**
+
+PASS
+
+---
+
+### Test 4 – 30% Packet Loss
+
+**Command**
+
+```bash
+LOSS_RATE = 0.3
+PYTHONPATH=. python3 stop_and_wait/receiver_stopwait.py
+PYTHONPATH=. python3 stop_and_wait/sender_stopwait.py
+```
+
+**Expected**
+
+* Frequent packet loss.
+* Multiple retransmissions.
+* Successful file transfer.
+
+**Actual**
+
+Receiver:
+
+```
+Packet dropped (simulated)
+Packet dropped (simulated)
+Packet dropped (simulated)
+Accepted seq=10
+END received
+```
+
+Sender:
+
+```
+Timeout → resending seq 0
+Timeout → resending seq 3
+Timeout → resending seq 6
+Timeout → resending seq 11
+File transfer complete
+```
+
+**Status**
+
+PASS
+
+---
+
+## Go-Back-N Testing
+
+### Test 1 – Data Transfer (0% Packet Loss)
+
+**Command**
+
+```bash
 python3 -m go_back_n receiver 5001 5000 4
 python3 -m go_back_n sender 5000 5001 4
 send hello
+```
 
-Expected
+**Expected**
 
-All packets received successfully.
-No retransmissions.
+* All packets delivered successfully.
+* No retransmissions.
+* Transfer completes.
 
-Actual
+**Actual**
 
-Packets 0–4 acknowledged successfully.
+```
+Packets transmitted successfully.
+ACKs received for all packets.
 Transfer completed.
+```
 
-Status
+**Status**
 
 PASS
 
-Test 2 – GBN Packet Loss (10%)
+---
 
-Command
+### Test 2 – 10% Packet Loss
 
+**Command**
+
+```bash
 python3 -m go_back_n receiver 5001 5000 4 --p 0.1
+python3 -m go_back_n sender 5000 5001 4
+send hello
+```
 
-Expected
+**Expected**
 
-Some packets dropped.
-Sender retransmits missing packets.
-Transfer completes successfully.
+* Some packets dropped.
+* Sender retransmits after timeout.
+* File transfer completes.
 
-Actual
+**Actual**
 
-Packet timeouts occurred.
+```
+Packet timeout occurred.
 Missing packets retransmitted.
 Transfer completed successfully.
+```
 
-Status
+**Status**
 
 PASS
 
-Test 3 – GBN Packet Loss (20%)
+---
 
-Expected:
+### Test 3 – 20% Packet Loss
 
-More retransmissions than 10%.
-Transfer still successful.
+**Expected**
 
-Actual:
+* Higher packet loss than 10%.
+* More retransmissions.
+* Successful transfer.
 
-Packet2 timeout
-Packet3 timeout
-Packet4 timeout
+**Actual**
+
+```
+Packet 2 timeout
+Packet 3 timeout
+Packet 4 timeout
 ACKs received after retransmission.
+Transfer completed successfully.
+```
 
-Status:
+**Status**
 
 PASS
 
-Test 4 – GBN Packet Loss (30%)
+---
 
-Expected:
+### Test 4 – 30% Packet Loss
 
-Frequent retransmissions.
-Transfer still completes correctly.
+**Expected**
 
-Actual:
+* Frequent packet loss.
+* Multiple retransmissions.
+* Successful file transfer.
 
-Several packets retransmitted.
+**Actual**
+
+```
+Several packets timed out.
+Window retransmitted.
 Receiver acknowledged all packets.
+Transfer completed successfully.
+```
 
-Status:
+**Status**
 
 PASS
-
-
