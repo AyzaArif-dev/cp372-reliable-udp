@@ -6,19 +6,32 @@ unreliable UDP sockets in Python.
 
 Project Structure
 
-├── stop_and_wait/
-│   ├── __init__.py
-│   ├── sender_stopwait.py     
-│   └── receiver_stopwait.py  
+```text
+cp372-reliable-udp/
 ├── go_back_n/
 │   ├── __init__.py
-│   ├── sender_gbn.py          
-│   └── receiver_gbn.py      
+│   ├── __main__.py
+│   ├── create_test_files.py
+│   ├── receiver_gbn.py
+│   ├── run_gbn_tests.py
+│   └── sender_gbn.py
 ├── shared/
 │   ├── __init__.py
-│   └── packet.py              
-└── tests/
-    └── test.txt              
+│   └── packet.py
+├── stop_and_wait/
+│   ├── __init__.py
+│   ├── receiver_stopwait.py
+│   ├── run_stopwait_tests.py
+│   └── sender_stopwait.py
+├── tests/
+│   ├── test_files/
+│   └── test.txt
+├── .gitignore
+├── gbn_results.csv
+├── LICENSE
+├── README.md
+├── received.txt
+└── Testing            
 
 
 How to Run the Experiments
